@@ -85,7 +85,7 @@ class FileSet():
         """
         # Check consistency
         if not os.path.isfile(nameset):
-            raise ValueError(f"'{path}' is not a valid file")
+            raise ValueError(f"'{nameset}' is not a valid file")
 
         if not os.path.isdir(path):
             raise ValueError(f"'{path}' is not a valid directory")
@@ -102,11 +102,12 @@ class FileSet():
         Return
             None
         """
-        nameset = open(self.nameset).readlines()
-        files = [file for file in os.listdir(self.path) if os.path.isfile(file)]
+        nameset = open(self.nameset, encoding='utf-8').readlines()
+        files = [file for file in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, file))]
 
         for index, (name, file) in enumerate(zip(nameset, files)):
-            print(f"'{file}' will be renamed '{name.strip()}'")
+            ext = os.path.splitext(file)[1]
+            print(f"'{file}' will be renamed '{name.strip() + ext}'")
 
     def rename(self):
         """Rename files in path according to nameset
@@ -117,11 +118,12 @@ class FileSet():
         Return
             None
         """
-        nameset = open(self.nameset).readlines()
-        files = [file for file in os.listdir(self.path) if os.path.isfile(file)]
+        nameset = open(self.nameset, encoding='utf-8').readlines()
+        files = [file for file in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, file))]
 
         for index, (name, file) in enumerate(zip(nameset, files)):
-            os.rename(os.path.join(self.path, file), os.path.join(self.path, name.strip()))
+            ext = os.path.splitext(file)[1]
+            os.rename(os.path.join(self.path, file), os.path.join(self.path, name.strip() + ext))
 
 if __name__ == "__main__":
     # Parse arguments
