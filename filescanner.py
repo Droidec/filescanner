@@ -41,6 +41,9 @@ def query_yes_no(question, default='yes'):
 
     Return
         A boolean representing user choice
+
+    Raise
+        ValueError if the default answer is invalid
     """
 
     valid = {
@@ -67,76 +70,213 @@ def query_yes_no(question, default='yes'):
         if choice in valid:
             return valid[choice]
 
-class FileSet():
-    """FileSet describe a set of files to be renamed
+class File():
+    """File describe a file on the filesystem
 
     Attributes
-        nameset (str) : File containing the name list to be applied
-        path (str) : Path containing files to be renamed
+        name (str) : File name
+        ext (str) : File extension (Default is '')
     """
 
-    def __init__(self, nameset, path):
+    def __init__(self, name, ext=''):
+        """File init
+
+        Raise
+            ValueError if extension is not valid
+        """
+        # Check consistency
+        if ext and not ext.startswith('.'):
+            raise ValueError(f"'{ext}' is not a valid extension")
+
+        self.name = name
+        self.ext = ext
+
+    def namext(self):
+        """Get file name with its extension
+
+        Return
+            The file name with its extension as a string
+        """
+        return self.name + self.ext
+
+class FileSet():
+    """FileSet describe utilities methods appliable on a set of files
+
+    Attributes
+        path (str) : Path to file set
+    """
+
+    def __init__(self, path):
         """FileSet init
 
         Raise
-            ValueError :
-                - If file does not exist
-                - If path does not exist
+            ValueError if path is not a directory
         """
         # Check consistency
-        if not os.path.isfile(nameset):
-            raise ValueError(f"'{nameset}' is not a valid file")
-
         if not os.path.isdir(path):
             raise ValueError(f"'{path}' is not a valid directory")
 
-        self.nameset = nameset
         self.path = path
 
-    def print(self):
-        """Print how files will be renamed
+    def __get_fileset(self, fmt=None):
+        """Get file set (Ignore hidden files)
 
         Parameters
-            None
+            fmt (list) : File format(s) restriction
 
         Return
-            None
+            The file set as a list of File object
         """
-        nameset = open(self.nameset, encoding='utf-8').readlines()
-        files = [file for file in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, file))]
+        fileset = []
 
-        for index, (name, file) in enumerate(zip(nameset, files)):
-            ext = os.path.splitext(file)[1]
-            print(f"'{file}' will be renamed '{name.strip() + ext}'")
+        for file in sorted(os.listdir(self.path)):
+            # Ignore hidden files
+            if file.startswith('.'):
+                continue
 
-    def rename(self):
-        """Rename files in path according to nameset
+            # Ignore everything that is not a file
+            if not os.path.isfile(os.path.join(self.path, file)):
+                continue
+
+            # Format restriction
+            if fmt is not None and not os.path.splitext(file)[1][1:] in fmt:
+                continue
+
+            name, ext = os.path.splitext(file)
+            fileset.append(File(name, ext))
+
+        return fileset
+
+    def prefix(self, value, fmt=None, preview=False):
+        """Prefix the file set with value
 
         Parameters
-            None
+            value (str) : The value to be applied as a prefix
+            fmt (list) : Only operate on specified format(s) (Default is 'None') [optional]
+            preview (boolean) : Only preview changes (Default is 'False') [optional]
 
         Return
-            None
+            Number of files (that would be) processed
         """
-        nameset = open(self.nameset, encoding='utf-8').readlines()
-        files = [file for file in os.listdir(self.path) if os.path.isfile(os.path.join(self.path, file))]
+        fileset = self.__get_fileset(fmt)
+        index = -1
 
-        for index, (name, file) in enumerate(zip(nameset, files)):
-            ext = os.path.splitext(file)[1]
-            os.rename(os.path.join(self.path, file), os.path.join(self.path, name.strip() + ext))
+        if preview:
+            for index, file in fileset:
+                print(f"Will rename [{file.namext()}] to [{value + file.namext()}]")
+            return index+1
+
+        for index, file in enumerate(fileset):
+            os.rename(os.path.join(self.path, file.namext()), os.path.join(self.path, value + file.namext()))
+
+        return index+1
+
+    def suffix(self, value, fmt=None, preview=False):
+        """Suffix the file set with value
+
+        Parameters
+            value (str) : The value to be applied as a suffix
+            fmt (list) : Only operate on specified format(s) (Default is 'None') [optional]
+            preview (boolean) : Only preview changes (Default is 'False') [optional]
+
+        Return
+            Number of files (that would be) processed
+        """
+        fileset = self.__get_fileset(fmt)
+        index = -1
+
+        if preview:
+            for index, file in fileset:
+                print(f"Will rename [{file.namext()}] to [{file.name + value + file.ext}]")
+            return index+1
+
+        for index, file in enumerate(fileset):
+            os.rename(os.path.join(self.path, file.namext()), os.path.join(self.path, file.name + value + file.ext))
+
+        return index+1
+
+    # def replace(self, oldvalue, newvalue, fmt=None, preview=False):
+        """Replace oldvalue in file set by newvalue
+
+        Parameters
+            oldvalue (str) : The old value to look for
+            newvalue (str) : The new value to be applied
+            fmt (list) : Only operate on specified format(s) (Default is 'None') [optional]
+            preview (boolean) : Only preview changes (Default is 'False') [optional]
+        """
+        # fileset = self.__get_fileset(fmt)
+        # index = -1
+
+        # if preview:
+        #     for file in 
+
+    def rename_by_file(self, namefile, fmt=None, preview=False):
+        """Rename the file set according to a nameset file (Filebot methodology)
+
+        Parameters
+            namefile (str) : Path to nameset file (Encoding is supposed to be in UTF-8)
+            fmt (list) : Only operate on specified format(s) (Default is 'None') [optional]
+            preview (boolean) : Only preview changes (Default is 'False') [optional]
+
+        Raise
+            ValueError if namefile is not a file
+        """
+        # Check consistency
+        if not os.path.isfile(namefile):
+            raise ValueError(f"'{namefile}' is not a valid file")
+
+        nameset = [line.strip() for line in open(namefile, encoding='utf-8').readlines() if line.strip()]
+        fileset = self.__get_fileset(fmt)
+        index = -1
+
+        if preview:
+            for index, (name, file) in enumerate(zip(nameset, fileset)):
+                print(f"Will rename [{file.namext()}] to [{name + file.ext}]")
+            return index+1
+
+        for index, (name, file) in enumerate(zip(nameset, fileset)):
+            os.rename(os.path.join(self.path, file.namext()), os.path.join(self.path, name + file.ext))
+
+        return index+1
 
 if __name__ == "__main__":
     # Parse arguments
-    parser = argparse.ArgumentParser(description="A file scanner that renames... files")
-    parser.add_argument('-f', '--file', help="File containing the name list to be applied", required=True)
-    parser.add_argument('-d', '--dir', help="Directory containing files to be renamed", required=True)
+    parser = argparse.ArgumentParser(description="A file scanner that operates on a set of files")
+    parser.add_argument('-f', '--format', default=None, nargs='+', help="Restrict the set to a file format list (Default is None)")
+    parser.add_argument('dir', help="Source directory")
+
+    # Possible operations
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--prefix', help="Prefix the set of files")
+    group.add_argument('--suffix', help="Suffix the set of files")
+    group.add_argument('--nameset', help="Rename files according to a nameset file")
 
     args = parser.parse_args()
-    fileset = FileSet(args.file, args.dir)
+    fileset = FileSet(args.dir)
 
-    fileset.print()
+    # Apply chosen operation
+    if args.prefix is not None:
+        num = fileset.prefix(args.prefix, args.format.lower(), True)
+        if num == 0:
+            raise ValueError("Nothing to do")
+        if not query_yes_no("\nIs this ok ?", 'yes'):
+            sys.exit(1)
+        num = fileset.prefix(args.prefix, args.format.lower(), False)
 
-    if not query_yes_no("\nIs this ok ?", 'yes'):
-        sys.exit(1)
+    if args.suffix is not None:
+        num = fileset.suffix(args.suffix, args.format.lower(), True)
+        if num == 0:
+            raise ValueError("Nothing to do")
+        if not query_yes_no("\nIs this ok ?", 'yes'):
+            sys.exit(1)
+        num = fileset.suffix(args.suffix, args.format.lower(), False)
 
-    fileset.rename()
+    if args.nameset is not None:
+        num = fileset.rename_by_file(args.nameset, args.format.lower(), True)
+        if num == 0:
+            raise ValueError("Nothing to do")
+        if not query_yes_no("\nIs this ok ?", 'yes'):
+            sys.exit(1)
+        num = fileset.rename_by_file(args.nameset, args.format.lower(), False)
+
+    print(f"Processed {num} files")
