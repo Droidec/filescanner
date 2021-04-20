@@ -146,7 +146,7 @@ Will rename [04 - tomes (piano).mp3] to [04 - Tomes (Piano).mp3]
 Will rename [05 - serenity interlude (piano).mp3] to [05 - Serenity Interlude (Piano).mp3]
 Will rename [06 - binding of isaac (piano).mp3] to [06 - Binding Of Isaac (Piano).mp3]
 Will rename [07 - penance (piano).mp3] to [07 - Penance (Piano).mp3]
-Will rename [08 - Mm innermost apocalypse (piano).mp3] to [08 - Mm Innermost Apocalypse (Piano).mp3]
+Will rename [08 - My innermost apocalypse (piano).mp3] to [08 - My Innermost Apocalypse (Piano).mp3]
 Will rename [09 - serenity (piano).mp3] to [09 - Serenity (Piano).mp3]
 
 Is this ok ? [Y/n]
