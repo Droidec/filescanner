@@ -71,22 +71,6 @@ def query_yes_no(question, default='yes'):
         if choice in valid:
             return valid[choice]
 
-def plexify(string):
-    """Attempt to recognize pattern and plexify string
-
-    Parameters
-        string : String to plexify
-
-    Return
-        The plexified string
-    """
-    if re.search(r'^\d+[-.]\d+[\s._-]*\w*', string):
-        # Pattern with Disk Number
-        return re.sub(r'^(\d+)[-.](\d+)[\s._-]*', r'\1-\2 - ', string, count=1)
-    else:
-        # Simple pattern
-        return re.sub(r'^(\d+)[\s._-]*', r'\1 - ', string, count=1)
-
 class File():
     """File describe a file on the filesystem
 
