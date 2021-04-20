@@ -274,6 +274,27 @@ class FileSet():
 
         return index+1
 
+    def capitalize(self, fmt=None, preview=False):
+        """Capitalize all words of the set of files
+
+        Parameters
+            fmt (list) : Only operate on specified format(s) (Default is 'None') [optional]
+            preview (boolean) : Only preview changes (Default is 'False') [optional]
+
+        Return
+            Number of files (that would be) processed
+        """
+        fileset = self.__get_fileset(fmt)
+        index = -1
+
+        for index, file in enumerate(fileset):
+            if preview:
+                print(f"Will rename [{file.namext()}] to [{file.name.title() + file.ext}]")
+            else:
+                os.rename(os.path.join(self.path, file.namext()), os.path.join(self.path, file.name.title() + file.ext))
+
+        return index+1
+
 if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser(description="A file scanner that operates on a set of files")
@@ -287,6 +308,7 @@ if __name__ == "__main__":
     group.add_argument('--replace', nargs=2, help="Replace substring by another one in the set of files")
     group.add_argument('--nameset', help="Rename files according to a nameset file")
     group.add_argument('--plexify', help="Rename the set of files in a format recommended by streaming services such as PleX", action='store_true')
+    group.add_argument('--capitalize', help="Capitalize all words of the set of files", action='store_true')
 
     args = parser.parse_args()
     fileset = FileSet(args.dir)
@@ -335,5 +357,13 @@ if __name__ == "__main__":
         if not query_yes_no("\nIs this ok ?", 'yes'):
             sys.exit(1)
         num = fileset.plexify(args.format, False)
+
+    if args.capitalize is True:
+        num = fileset.capitalize(args.format, True)
+        if num == 0:
+            raise ValueError("Empty set of files. Nothing to do")
+        if not query_yes_no("\nIs this ok ?", 'yes'):
+            sys.exit(1)
+        num = fileset.capitalize(args.format, False)
 
     print(f"Processed {num} files")

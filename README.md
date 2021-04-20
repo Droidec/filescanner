@@ -24,15 +24,16 @@ Available operations (See full description below):
 - Replace (--replace)
 - Nameset (--nameset)
 - Plexify (--plexify)
+- Capitalize (--capitalize)
 
 ## Prefix
 
 Prefix the set of files (--prefix)
 
-For example, if you want to prefix your *FLAC* files in *Download* directory with `0`:
+For example, if you want to prefix your files in *Download* directory with `0`:
 
 ```text
-> python3 filescanner.py ~/Downloads --format flac --prefix 0
+> python3 filescanner.py ~/Downloads --prefix 0
 
 Will rename [1 - Track 1.flac] to [01 - Track 1.flac]
 Will rename [2 - Track 2.flac] to [02 - Track 2.flac]
@@ -45,10 +46,10 @@ Is this ok ? [Y/n]
 
 Suffix the set of files (--suffix)
 
-For example, if you want to suffix your *FLAC* files in *Download* directory with `[To remove]`:
+For example, if you want to suffix your files in *Download* directory with `[To remove]`:
 
 ```text
-> python3 filescanner.py ~/Downloads --format flac --suffix ' [To remove]'
+> python3 filescanner.py ~/Downloads --suffix ' [To remove]'
 
 Will rename [1 - Track 1.flac] to [1 - Track 1 [To remove].flac]
 Will rename [2 - Track 2.flac] to [2 - Track 2 [To remove].flac]
@@ -81,7 +82,7 @@ The nameset file consists of a UTF-8 file where each line corresponds to a name 
 The operation proceed until it reaches the end of the nameset file or if there is no more files in the set.  
 It is greatly inspired by the [FileBot](https://www.filebot.net) naming convention, but this script will do it for free...
 
-For example, consider a `name.txt` file containing:
+For example, consider a root `name.txt` file containing:
 
 ```text
 121045
@@ -89,7 +90,7 @@ For example, consider a `name.txt` file containing:
 181045
 ```
 
-The command would be:
+The command for *Download* directory would be:
 
 ```text
 > python3 filescanner.py ~/Downloads --nameset name.txt
@@ -129,6 +130,18 @@ Will rename [1.05 - Track 5.flac] to [1-05 - Track 5.flac]
 Is this ok ? [Y/n]
 ```
 
+## Capitalize
+
+Capitalize all words of the set of files.
+
+For example, if you want to capitalize your files in *Download* directory:
+
+```text
+> python3 filescanner.py ~/Downloads --capitalize
+
+
+```
+
 # Import
 
 You can import the module in another project like so:
@@ -144,6 +157,7 @@ fileset.suffix(affix, [fmt=], [preview=])
 fileset.replace(oldval, newval, [fmt=], [preview=])
 fileset.nameset(nmfile, [fmt=], [preview=])
 fileset.plexify([fmt=], [preview=])
+fileset.capitalize([fmt=], [preview=])
 ```
 
 # Author(s)
