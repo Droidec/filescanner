@@ -4,11 +4,11 @@
 It allows you to apply various operations on a set of files to increase your productivity.  
 *Unix/OS-X hidden files are ignored.*
 
-# Dependencies
+## Dependencies
 
 None
 
-# Usage
+## Usage
 
 Simply call the python script `filescanner.py` by specifying a source directory and an operation.  
 Before any changes, the script will preview the operation and ask you if you're agree.  
@@ -26,7 +26,7 @@ Available operations (See full description below):
 - Plexify (--plexify)
 - Capitalize (--capitalize)
 
-## Prefix
+### Prefix
 
 Prefix the set of files (--prefix)
 
@@ -42,7 +42,7 @@ Will rename [3 - Track 3.flac] to [03 - Track 3.flac]
 Is this ok ? [Y/n]
 ```
 
-## Suffix
+### Suffix
 
 Suffix the set of files (--suffix)
 
@@ -58,7 +58,7 @@ Will rename [3 - Track 3.flac] to [3 - Track 3 [To remove].flac]
 Is this ok ? [Y/n]
 ```
 
-## Replace
+### Replace
 
 Replace substring by another one in the set of files (--replace)
 
@@ -74,7 +74,7 @@ Will rename [Track 3.mp3] to [Song 3.mp3]
 Is this ok ? [Y/n]
 ```
 
-## Nameset
+### Nameset
 
 Rename the set of files according to a nameset file (--nameset)
 
@@ -102,7 +102,7 @@ Will rename [Episode 3.mkv] to [181045.mkv]
 Is this ok ? [Y/n]
 ```
 
-## Plexify
+### Plexify
 
 Rename the set of files in a format recommended by streaming services such as [PleX](https://www.plex.tv/).  
 Made for people who massively download OST on the Internet and are too lazy to modify one by one the format of each file.  
@@ -130,7 +130,7 @@ Will rename [1.05 - Track 5.flac] to [1-05 - Track 5.flac]
 Is this ok ? [Y/n]
 ```
 
-## Capitalize
+### Capitalize
 
 Capitalize all words of the set of files.
 
@@ -152,7 +152,7 @@ Will rename [09 - serenity (piano).mp3] to [09 - Serenity (Piano).mp3]
 Is this ok ? [Y/n]
 ```
 
-# Import
+## Import
 
 You can import the module in another project like so:
 
@@ -170,10 +170,10 @@ fileset.plexify([fmt=], [preview=])
 fileset.capitalize([fmt=], [preview=])
 ```
 
-# Author(s)
+## Author(s)
 
-Droidec (Marc G.) <https://github.com/Droidec>
+Marc GIANNETTI <mgtti.pro@gmail.com>
 
-# Licence
+## Licence
 
 `filescanner` is released under BSD-3 clause licence. See the LICENCE file in this source distribution for more information.
