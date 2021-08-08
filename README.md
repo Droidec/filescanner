@@ -170,7 +170,7 @@ fileset.plexify([fmt=], [preview=])
 fileset.capitalize([fmt=], [preview=])
 ```
 
-## Author(s)
+## Author
 
 Marc GIANNETTI <mgtti.pro@gmail.com>
 
