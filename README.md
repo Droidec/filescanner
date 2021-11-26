@@ -176,4 +176,5 @@ Marc GIANNETTI <mgtti.pro@gmail.com>
 
 ## Licence
 
-`filescanner` is released under BSD-3 clause licence. See the LICENCE file in this source distribution for more information.
+`filescanner` is released under BSD-3 clause licence.  
+See the LICENCE file in this source distribution for more information.
