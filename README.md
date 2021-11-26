@@ -172,7 +172,7 @@ fileset.capitalize([fmt=], [preview=])
 
 ## Author
 
-Marc GIANNETTI <mgtti.pro@gmail.com>
+Marc GIANNETTI \<mgtti.pro@gmail.com\>
 
 ## Licence
 
