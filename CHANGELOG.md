@@ -5,6 +5,7 @@ This CHANGELOG indicates the different versions of the `filescanner` tool.
 ## Version 1.1.1
 
 - Rewrite TODO in markdown
+- Fix README
 
 ## Version 1.1.0
 
