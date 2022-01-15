@@ -295,6 +295,30 @@ class FileSet():
 
         return index+1
 
+    def number(self, fmt=None, preview=False):
+        """Number the set of files
+
+        NOTE : Fill numbers with zeros according to the number of files in the set
+
+        Parameters
+            fmt (list) : Only operate on specified format(s) (Default is 'None') [optional]
+            preview (boolean) : Only preview changes (Default is 'False') [optional]
+
+        Return
+            Number of files (that would be) processed
+        """
+        fileset = self.__get_fileset(fmt)
+        length = len(str(len(fileset)))
+        index = -1
+
+        for index, file in enumerate(fileset):
+            if preview:
+                print(f"Will rename [{file.namext()}] to [{str(index+1).zfill(length)} {file.namext()}]")
+            else:
+                os.rename(os.path.join(self.path, file.namext()), os.path.join(self.path, f"{str(index+1).zfill(length)} {file.namext()}"))
+
+        return index+1
+
 if __name__ == "__main__":
     # Parse arguments
     parser = argparse.ArgumentParser(description="A file scanner that operates on a set of files")
@@ -309,6 +333,7 @@ if __name__ == "__main__":
     group.add_argument('--nameset', help="Rename files according to a nameset file")
     group.add_argument('--plexify', help="Rename the set of files in a format recommended by streaming services such as PleX", action='store_true')
     group.add_argument('--capitalize', help="Capitalize all words of the set of files", action='store_true')
+    group.add_argument('--number', help="Number the set of files", action='store_true')
 
     args = parser.parse_args()
     fileset = FileSet(args.dir)
@@ -365,5 +390,13 @@ if __name__ == "__main__":
         if not query_yes_no("\nIs this ok ?", 'yes'):
             sys.exit(1)
         num = fileset.capitalize(args.format, False)
+
+    if args.number is True:
+        num = fileset.number(args.format, True)
+        if num == 0:
+            raise ValueError("Empty set of files. Nothing to do")
+        if not query_yes_no("\nIs this ok ?", 'yes'):
+            sys.exit(1)
+        num = fileset.number(args.format, False)
 
     print(f"Processed {num} files")

@@ -152,6 +152,34 @@ Will rename [09 - serenity (piano).mp3] to [09 - Serenity (Piano).mp3]
 Is this ok ? [Y/n]
 ```
 
+### Number
+
+Number the set of files.  
+According to the number of files in the set, numbers will be filled with zeros if needed.
+
+For example, if you want to number your files in *Download* directory:
+
+```text
+> python3 filescanner.py ~/Downloads --number
+
+Will rename [Combat Theme 1.mp3] to [01 Combat Theme 1.mp3]
+Will rename [Combat Theme 2.mp3] to [02 Combat Theme 2.mp3]
+Will rename [Combat Theme 3.mp3] to [03 Combat Theme 3.mp3]
+Will rename [Combat Theme 4.mp3] to [04 Combat Theme 4.mp3]
+Will rename [Combat Theme 5.mp3] to [05 Combat Theme 5.mp3]
+Will rename [Combat Theme 6.mp3] to [06 Combat Theme 6.mp3]
+Will rename [Combat Theme 7.mp3] to [07 Combat Theme 7.mp3]
+Will rename [Combat Theme 8.mp3] to [08 Combat Theme 8.mp3]
+Will rename [Danger Rising - Combat Theme.mp3] to [09 Danger Rising - Combat Theme.mp3]
+Will rename [End Credits.mp3] to [10 End Credits.mp3]
+Will rename [Wingsuit Exploration 1.mp3] to [11 Wingsuit Exploration 1.mp3]
+Will rename [Wingsuit Exploration 2.mp3] to [12 Wingsuit Exploration 2.mp3]
+Will rename [Wingsuit Exploration 3.mp3] to [13 Wingsuit Exploration 3.mp3]
+Will rename [Wingsuit Exploration 4.mp3] to [14 Wingsuit Exploration 4.mp3]
+
+Is this ok ? [Y/n]
+```
+
 ## Import
 
 You can import the module in another project like so:
