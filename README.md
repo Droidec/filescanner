@@ -104,7 +104,8 @@ Is this ok ? [Y/n]
 
 ### Plexify
 
-Rename the set of files in a format recommended by streaming services such as [PleX](https://www.plex.tv/).  
+Rename the set of files in a format recommended by streaming services such as [PleX](https://www.plex.tv/).
+
 Made for people who massively download OST on the Internet and are too lazy to modify one by one the format of each file.  
 This operation attempts to recognize the pattern used in the set of files and transform it to:  
 `DiskNumber-TrackNumber - TrackName.ext`.
@@ -154,7 +155,8 @@ Is this ok ? [Y/n]
 
 ### Number
 
-Number the set of files.  
+Number the set of files.
+
 According to the number of files in the set, numbers will be filled with zeros if needed.
 
 For example, if you want to number your files in *Download* directory:
